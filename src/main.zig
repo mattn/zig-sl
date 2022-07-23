@@ -16,8 +16,8 @@ const w32 = if (is_windows) struct {
 } else undefined;
 
 pub fn main() anyerror!void {
-    const handle = if (is_windows) w32.GetStdHandle(w32.STD_ERROR_HANDLE) else @as(i32, 0);
-    var mode = if (is_windows) @as(w32.DWORD, 0) else @as(i32, 0);
+    const handle = if (is_windows) w32.GetStdHandle(w32.STD_ERROR_HANDLE) else void;
+    var mode: if (is_windows) w32.DWORD else void = if (is_windows) @as(w32.DWORD, 0) else undefined;
 
     if (builtin.os.tag == .windows) {
         if (w32.GetConsoleMode(handle, &mode) != 0) {
@@ -71,8 +71,5 @@ pub fn main() anyerror!void {
 
     if (builtin.os.tag == .windows) {
         _ = w32.SetConsoleMode(handle, mode);
-    } else {
-        _ = handle;
-        _ = mode;
     }
 }
