@@ -19,7 +19,7 @@ pub fn main() anyerror!void {
     const handle = if (is_windows) w32.GetStdHandle(w32.STD_ERROR_HANDLE) else void;
     var mode: if (is_windows) w32.DWORD else void = if (is_windows) @as(w32.DWORD, 0) else undefined;
 
-    if (builtin.os.tag == .windows) {
+    if (is_windows) {
         if (w32.GetConsoleMode(handle, &mode) != 0) {
             mode |= w32.ENABLE_VIRTUAL_TERMINAL_PROCESSING;
             mode = w32.SetConsoleMode(handle, mode);
@@ -69,7 +69,7 @@ pub fn main() anyerror!void {
         std.time.sleep(2e7);
     }
 
-    if (builtin.os.tag == .windows) {
+    if (is_windows) {
         _ = w32.SetConsoleMode(handle, mode);
     }
 }
